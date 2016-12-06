@@ -13,7 +13,7 @@ do
 done
 while :;
 do
-	total="`awk -f /home/lahoti/Documents/scripts/bash/player/sum.awk $1`"
+	total="`awk -f /home/lahoti/Documents/scripts/bash/player/release/sum.awk $1`"
 	rand=$RANDOM
-	mpv `awk -v total=$total -v RANDOM=$rand -f /home/lahoti/Documents/scripts/bash/player/main.awk $1`
+	mpv `awk -v total=$total -v RANDOM=$rand -f /home/lahoti/Documents/scripts/bash/player/release/main.awk $1`
 done
