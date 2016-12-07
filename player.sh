@@ -11,7 +11,7 @@ do
 			exit 2;;
 	esac
 done
-directory=$(dirname "$(test -L "$0" && readlink "$0" || echo "$0")")
+directory=$(dirname -- "$(readlink -f -- "$0")")
 while :;
 do
 	total="`awk -f $directory/sum.awk $1`"
