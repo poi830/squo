@@ -1,20 +1,27 @@
 #!/bin/bash
 
-while getopts :h opt
+audiodisplay=""
+playlist="playlist.txt"
+for i in "$@"
 do
-	case $opt in
-		h)
-			printf "Simple music player allowing you to change how often a song plays and at what volume.\nUsage: squo playlist\n"
-			exit 0;;
-		?)
-			printf "Invalid option: $OPTARG\nUsage: squo playlist\n"
-			exit 2;;
-	esac
+	if [[ $i = "-h" ]]
+	then
+		printf "Simple music player allowing you to change how often a song plays and at what volume.\nUsage: player.sh playlist\n"
+		exit 0
+	elif [[ $i = "-v" ]]
+	then
+		audiodisplay="--no-audio-display"
+	elif [[ $i = "-V" ]]
+	then
+		audiodisplay=""
+	else
+		playlist=$i
+	fi
 done
 directory=$(dirname -- "$(readlink -f -- "$0")")
 while :;
 do
-	total="`awk -f $directory/sum.awk $1`"
+	total="`awk -f $directory/sum.awk $playlist`"
 	rand=$RANDOM
-	mpv `awk -v total=$total -v RANDOM=$rand -f $directory/main.awk $1`
+	mpv $audiodisplay `awk -v total=$total -v RANDOM=$rand -f $directory/main.awk $playlist`
 done
