@@ -24,7 +24,7 @@ while read -r option arg1 || [[ -n "$line" ]]; do
 	elif [[ $option = "--volumeoption" ]]; then
 		volumeoption="$arg1"
 	elif [[ $option = "-d" ]] || [[ $option = "--delimiter" ]]; then
-		delimiter="$arg2"
+		delimiter="$arg1"
 	elif [[ ! ${option:0:1} = "#" ]]; then
 		echo "Unrecognized option in config: $1"
 	fi
@@ -43,13 +43,13 @@ while true; do
 		-V|--av)
 			audiodisplay=""; shift;;
 		-p|--player)
-			player=$2; shift 2;;
+			player="$2"; shift 2;;
 		-f|--filename)
-			playlist=$2; shift 2;;
+			playlist="$2"; shift 2;;
 		--volumeoption)
-			volumeoption=$2; shift 2;;
+			volumeoption="$2"; shift 2;;
 		-d|--delimiter)
-			delimiter=$2; shift 2;;
+			delimiter="$2"; shift 2;;
 		--)
 			shift; break;;
 		*)
