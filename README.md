@@ -24,6 +24,8 @@ Playlists are specified in the format "/path/to/song;volume;weight;song-specific
 
 `-d` or `--delimiter`: sets the delimiter between fields in playlist (this can be a regex), default is `;`
 
+`-e` or `--extraoptions`: sends the argument to the player
+
 ## config
 
 The config file is a list of options, one per line.

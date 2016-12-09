@@ -1,0 +1,70 @@
+#!/bin/bash
+
+audiodisplay=""
+playlist="playlist.txt"
+config="$HOME/.config/squo/config"
+player="mpv"
+volumeoption="--volume"
+delimiter=";"
+
+if [ ! -e $config ]; then
+	mkdir -p "$HOME/.config/squo"
+	echo "-v" > $config
+fi
+
+while read -r option arg1 || [[ -n "$line" ]]; do
+	if [[ $option = "-v" ]] || [[ $option = "--no-av" ]]; then
+		audiodisplay="--no-audio-display"
+	elif [[ $option = "-V" ]] || [[ $option = "--av" ]]; then
+		audiodisplay=""
+	elif [[ $option = "-p" ]] || [[ $option = "--player" ]]; then
+		player="$arg1"
+	elif [[ $option = "-f" ]] || [[ $option = "--filename" ]]; then
+		playlist="$arg1"
+	elif [[ $option = "--volumeoption" ]]; then
+		volumeoption="$arg1"
+	elif [[ $option = "-d" ]] || [[ $option = "--delimiter" ]]; then
+		delimiter="$arg1"
+	elif [[ $option = "-e" ]] || [[ $option = "--extra-options" ]]; then
+		extraoptions+="$arg1"
+	elif [[ ! ${option:0:1} = "#" ]]; then
+		echo "Unrecognized option in config: $1"
+	fi
+done < $config
+
+TEMP=`getopt -o h::v::V::p::f::d::e:: --long help::,no-av::,av::,player::,filename::,volumeoption::,delimiter::,extra-options:: -- "$@"`
+eval set -- "$TEMP"
+
+while true; do
+	case "$1" in
+		-h|--help)
+			printf "Simple music player allowing you to change how often a song plays and at what volume.\nUsage: player.sh playlist\n"
+			exit 0;;
+		-v|--no-av)
+			audiodisplay="--no-audio-display"; shift;;
+		-V|--av)
+			audiodisplay=""; shift;;
+		-p|--player)
+			player="$2"; shift 2;;
+		-f|--filename)
+			playlist="$2"; shift 2;;
+		--volumeoption)
+			volumeoption="$2"; shift 2;;
+		-d|--delimiter)
+			delimiter="$2"; shift 2;;
+		-e|--extra-options)
+			extraoptions+="$2"; shift 2;;
+		--)
+			shift; break;;
+		*)
+			playlist=$1; shift;;
+	esac
+done
+
+directory=$(dirname -- "$(readlink -f -- "$0")")
+
+while true; do
+	total="`awk -F';' -f $directory/sum.awk $playlist`"
+	rand=$RANDOM
+	$player $audiodisplay $extraoptions `awk -F$delimiter -v total=$total -v RANDOM=$rand -v volumeoption=$volumeoption -f $directory/volume.awk $playlist` "`awk -F$delimiter -v total=$total -v RANDOM=$rand -f $directory/filechooser.awk $playlist`"
+done
