@@ -2,7 +2,7 @@
 
 ## usage
 
-The script is called as `squo [-vVh] playlist`.
+The script is called as `squo [-fhpvV] playlist`.
 
 ## playlists
 
@@ -10,11 +10,17 @@ Playlists are specified in the format "/path/to/song volume weight", with a song
 
 ## options
 
-`-v`: sets the `--no-audio-video` option in mpv
+`-v` or `--no-av`: sets the `--no-audio-video` option in mpv
 
-`-V`: unsets the `--no-audio-video` option
+`-V` or `--av`: unsets the `--no-audio-video` option
 
-`-h`: prints a help message
+`-h` or `--help`: prints a help message
+
+`-p` or `--player`: allows you to choose a music player, default is `mpv`
+
+`-f` or `--filename`: alternate method for choosing playlist name, default is `playlist.txt`
+
+`--volumeoption`: sets option for setting volume, default is `volume`
 
 ## config
 

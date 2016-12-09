@@ -1,3 +1,7 @@
 sum/total < RANDOM/32767	{ name=$1; audio=$(NF-1) }
 				{ sum+=$NF }
-END	{ printf("--volume %d %s", audio, name) }
+END	{ if (length(volumeoption) != 0) {
+		printf("%s %d %s", volumeoption, audio, name) }
+	else {
+		printf("%d %s", audio, name) }
+	}
