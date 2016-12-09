@@ -5,6 +5,7 @@ playlist="playlist.txt"
 config="$HOME/.config/squo/config"
 player="mpv"
 volumeoption="--volume"
+delimiter=";"
 
 if [ ! -e $config ]; then
 	mkdir -p "$HOME/.config/squo"
@@ -12,22 +13,24 @@ if [ ! -e $config ]; then
 fi
 
 while read -r option arg1 || [[ -n "$line" ]]; do
-	if [[ $option = "-v" ]]; then
+	if [[ $option = "-v" ]] || [[ $option = "--no-av" ]]; then
 		audiodisplay="--no-audio-display"
-	elif [[ $option = "-V" ]]; then
+	elif [[ $option = "-V" ]] || [[ $option = "--av" ]]; then
 		audiodisplay=""
-	elif [[ $option = "-p" ]]; then
+	elif [[ $option = "-p" ]] || [[ $option = "--player" ]]; then
 		player="$arg1"
-	elif [[ $option = "-f" ]]; then
+	elif [[ $option = "-f" ]] || [[ $option = "--filename" ]]; then
 		playlist="$arg1"
 	elif [[ $option = "--volumeoption" ]]; then
 		volumeoption="$arg1"
+	elif [[ $option = "-d" ]] || [[ $option = "--delimiter" ]]; then
+		delimiter="$arg2"
 	elif [[ ! ${option:0:1} = "#" ]]; then
 		echo "Unrecognized option in config: $1"
 	fi
 done < $config
 
-TEMP=`getopt -o h::v::V::p::f:: --long help::,no-av::,av::,player::,filename::,volumeoption:: -- "$@"`
+TEMP=`getopt -o h::v::V::p::f::d:: --long help::,no-av::,av::,player::,filename::,volumeoption::,delimiter:: -- "$@"`
 eval set -- "$TEMP"
 
 while true; do
@@ -45,6 +48,8 @@ while true; do
 			playlist=$2; shift 2;;
 		--volumeoption)
 			volumeoption=$2; shift 2;;
+		-d|--delimiter)
+			delimiter=$2; shift 2;;
 		--)
 			shift; break;;
 		*)

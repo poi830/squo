@@ -22,6 +22,8 @@ Playlists are specified in the format "/path/to/song;volume;weight", with a song
 
 `--volumeoption`: sets option for setting volume, default is `volume`
 
+`-d` or `--delimiter`: sets the delimiter between fields in playlist (this can be a regex)
+
 ## config
 
 The config file is a list of options, one per line.
