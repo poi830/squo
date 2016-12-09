@@ -55,7 +55,7 @@ done
 directory=$(dirname -- "$(readlink -f -- "$0")")
 
 while true; do
-	total="`awk -f $directory/sum.awk $playlist`"
+	total="`awk -F';' -f $directory/sum.awk $playlist`"
 	rand=$RANDOM
-	$player $audiodisplay `awk -v total=$total -v RANDOM=$rand -v volumeoption=$volumeoption -f $directory/main.awk $playlist`
+	$player $audiodisplay `awk -F';' -v total=$total -v RANDOM=$rand -v volumeoption=$volumeoption -f $directory/main.awk $playlist`
 done
