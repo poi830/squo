@@ -2,7 +2,7 @@
 
 ## usage
 
-The script is called as `squo [-fhpvV] playlist`.
+The script is called as `squo [OPTIONS] [playlist]`.
 
 ## playlists
 
