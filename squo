@@ -32,8 +32,9 @@ while read -r option arg1 || [[ -n "$line" ]]; do
 	fi
 done < $config
 
-TEMP=`getopt -o h::v::V::p::f::d::e:: --long help::,no-av::,av::,player::,filename::,volumeoption::,delimiter::,extra-options:: -- "$@"`
+TEMP=`getopt -o hvVp:f:d:e: -l help,no-av,av,player:,filename:,volumeoption:,delimiter:,extra-options: -- "$@"`
 eval set -- "$TEMP"
+echo $TEMP
 
 while true; do
 	case "$1" in
@@ -55,8 +56,10 @@ while true; do
 		-e|--extra-options)
 			extraoptions+="$2"; shift 2;;
 		--)
+			echo a
 			shift; break;;
 		*)
+			echo $1
 			playlist=$1; shift;;
 	esac
 done
